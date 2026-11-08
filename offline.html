@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#4a3fc4">
+  <meta name="robots" content="noindex">
+  <title>Hors ligne — SkillSwap Campus</title>
+  <style>
+    :root { color-scheme: light; --fond: #f4f2ec; --surface: #fffdf9; --encre: #19182b; --douce: #5f5c70; --primaire: #4a3fc4; --accent: #e8a92c; --trait: #dcd6ca; }
+    @media (prefers-color-scheme: dark) {
+      :root { color-scheme: dark; --fond: #0f0e1a; --surface: #1b192b; --encre: #f6f3ea; --douce: #bbb6ca; --primaire: #a69fff; --accent: #f0bc55; --trait: #37334f; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+      background: radial-gradient(circle at 80% 10%, rgba(232, 169, 44, .16), transparent 32%),
+        radial-gradient(circle at 10% 90%, rgba(74, 63, 196, .16), transparent 36%), var(--fond);
+      color: var(--encre); font: 16px/1.6 "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    }
+    main { width: min(100%, 560px); padding: clamp(24px, 5vw, 42px); border: 1px solid var(--trait); border-radius: 28px; background: var(--surface); box-shadow: 0 24px 50px -28px rgba(0, 0, 0, .35); }
+    .marque { display: flex; align-items: center; gap: 11px; margin-bottom: 28px; font-weight: 800; letter-spacing: -.02em; }
+    .marque svg { width: 40px; height: 40px; flex: none; }
+    .marque small { display: block; color: var(--douce); font-size: .76rem; font-weight: 500; letter-spacing: 0; }
+    .signal { display: grid; place-items: center; width: 74px; height: 74px; margin-bottom: 20px; border-radius: 22px; background: var(--fond); color: var(--primaire); }
+    h1 { margin: 0 0 10px; font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.05; letter-spacing: -.045em; }
+    p { margin: 0 0 16px; color: var(--douce); }
+    .actions { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 24px; }
+    .bouton, button {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 17px;
+      border: 1.5px solid var(--primaire); border-radius: 10px; background: var(--primaire); color: #fff;
+      font: inherit; font-weight: 700; text-decoration: none; cursor: pointer;
+    }
+    button { background: transparent; color: var(--primaire); border-color: var(--trait); }
+    .bouton:hover { filter: brightness(.94); text-decoration: none; }
+    button:hover { background: var(--fond); }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .note { margin: 22px 0 0; padding-top: 16px; border-top: 1px solid var(--trait); font-size: .82rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="marque" aria-label="SkillSwap Campus">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#4a3fc4"></rect>
+        <path d="M9 6h14v2.5l-5.2 7.5 5.2 7.5V26H9v-2.5l5.2-7.5L9 8.5z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"></path>
+        <path d="M12 23.6h8l-4-5z" fill="#f2b134"></path>
+      </svg>
+      <span>SkillSwap<small>Campus · banque du temps</small></span>
+    </div>
+    <div class="signal" aria-hidden="true">
+      <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"></path>
+      </svg>
+    </div>
+    <h1>Le campus attend votre connexion.</h1>
+    <p>Vous êtes actuellement hors ligne. Les séances, le portefeuille et vos échanges ont besoin d’une connexion pour rester à jour et protéger vos données.</p>
+    <p>Reconnectez-vous au réseau, puis réessayez. Cette page de secours ne contient aucune donnée personnelle.</p>
+    <div class="actions">
+      <button type="button" onclick="location.reload()">Réessayer</button>
+      <a class="bouton" href="./">Retour à l’accueil</a>
+    </div>
+    <p class="note">Cette page est conservée localement uniquement pour vous signaler une coupure réseau. Aucune page connectée n’est mise en cache.</p>
+  </main>
+</body>
+</html>

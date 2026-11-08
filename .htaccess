@@ -1,0 +1,51 @@
+# =====================================================================
+#  SkillSwap Campus — racine web (htdocs/ ou sous-dossier)
+#  Le code, la base, les scripts et les tests ne sont jamais servis.
+# =====================================================================
+
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_mime.c>
+    AddType application/manifest+json .webmanifest
+    AddType application/vnd.android.package-archive .apk
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Dossiers sensibles : on renvoie vers le contrôleur frontal, qui
+    # répond par une page 404 propre. Les .htaccess de ces dossiers
+    # constituent une seconde barrière si la réécriture est désactivée.
+    RewriteRule ^(?:src|vues|database|scripts|tests|data)(?:/|$) index.php [L,NC]
+    RewriteRule ^config\.php$ index.php [L,NC]
+
+    # Fichiers de données, sauvegardes, documentation et secrets.
+    RewriteRule \.(?:db|sqlite|sqlite3|sql|log|txt|md|ini|json|lock|bak|env|phar|zip)$ index.php [L,NC]
+
+    # Fichiers statiques réels (css/, js/) servis directement.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Toutes les autres URL passent par le contrôleur frontal.
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header unset X-Powered-By
+    <Files "sw.js">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+    </Files>
+    <Files "manifest.webmanifest">
+        Header set Cache-Control "public, max-age=3600"
+    </Files>
+</IfModule>
+
+<Files "config.php">
+    Require all denied
+</Files>
+
+<FilesMatch "\.(db|sqlite|sqlite3|sql|log|ini|lock|bak|env|phar|zip)$">
+    Require all denied
+</FilesMatch>

@@ -1,0 +1,23 @@
+SkillSwap Campus — APK Android
+==============================
+
+Fichier : SkillSwap-Campus.apk
+Version : 1.0
+Paquet : ma.skillswap.campus
+
+Installation :
+1. Copiez l'APK sur le téléphone ou ouvrez-le depuis le site.
+2. Autorisez l'installation depuis cette source si Android le demande.
+3. Au premier lancement, saisissez l'adresse HTTPS du site déployé, par
+   exemple : https://votre-campus.infinityfreeapp.com/
+4. L'application mémorise l'adresse et ouvre directement le campus.
+
+Pour changer l'adresse plus tard : appui long sur la page du campus, puis
+« Changer l'adresse du site ». En cas de panne réseau, un écran « Campus
+injoignable » propose de réessayer.
+
+L'APK fourni est signé avec une clé de test. Il est destiné à l'installation
+directe, pas à une publication sur le Play Store. Les sources et la procédure
+de construction se trouvent dans le dossier skillswap-android/ du projet.
+
+L'adresse doit être en HTTPS avec un certificat valide. Le HTTP est refusé.

@@ -1,0 +1,13 @@
+# Base de données et journaux locaux
+/data/skillswap.db
+/data/skillswap.db-*
+/data/PREMIER_ACCES.txt
+/data/logs/*
+!/data/logs/.htaccess
+
+# Archives et fichiers de travail
+/*.zip
+/*.sha256
+/.idea/
+/.vscode/
+*.log

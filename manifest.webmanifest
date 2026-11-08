@@ -1,0 +1,36 @@
+{
+  "id": "./",
+  "name": "SkillSwap Campus",
+  "short_name": "SkillSwap",
+  "description": "La banque du temps du campus : donnez une heure de votre savoir, recevez une heure pour apprendre.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f4f2ec",
+  "theme_color": "#4a3fc4",
+  "categories": ["education", "productivity"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
