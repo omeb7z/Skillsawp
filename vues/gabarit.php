@@ -118,7 +118,7 @@ $lienNav = static function (array $item) use ($estActif): string {
   <link rel="manifest" href="<?= e(url('/manifest.webmanifest')) ?>">
   <link rel="apple-touch-icon" href="<?= e(url('/icons/apple-touch-icon.png')) ?>">
   <link rel="icon" type="image/png" sizes="32x32" href="<?= e(url('/icons/favicon-32.png')) ?>">
-  <link rel="stylesheet" href="<?= e(url('/css/skillswap.css')) ?>">
+  <link rel="stylesheet" href="<?= e(url('/css/skillswap-v4.css')) ?>">
   <noscript>
     <style>
       .theme-toggle { display: none !important; }

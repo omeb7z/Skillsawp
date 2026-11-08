@@ -749,7 +749,7 @@ test('fichiers_php_sans_bom_ni_balise_fermante', function (Env $e) {
 
 test('phase2_design_system_local_et_reperes_accessibles', function (Env $e) {
     $racine = dirname(__DIR__);
-    $css = (string) file_get_contents($racine . '/css/skillswap.css');
+    $css = (string) file_get_contents($racine . '/css/skillswap-v4.css');
     $js = (string) file_get_contents($racine . '/js/skillswap.js');
     $gabarit = (string) file_get_contents($racine . '/vues/gabarit.php');
     $helpers = (string) file_get_contents($racine . '/src/helpers.php');
@@ -840,6 +840,7 @@ test('phase4_pwa_offline_et_page_bienvenue', function (Env $e) {
     verifier(str_contains($bienvenue, 'Proposez') && str_contains($bienvenue, 'Échangez') && str_contains($bienvenue, 'Progressez'), 'étapes de la page d’accueil absentes');
     verifier(str_contains($bienvenue, 'de bienvenue.') && str_contains($bienvenue, 'jeton(2)'), 'mention des deux heures de bienvenue absente');
     verifier(str_contains($bienvenue, 'accueil-statistiques') && str_contains($bienvenue, 'credits_transferes'), 'statistiques dynamiques absentes');
+    verifier(str_contains($bienvenue, 'class="accueil-principes"') && str_contains($bienvenue, 'class="accueil-parcours"') && str_contains($bienvenue, 'class="accueil-chiffres"'), 'nouvelle hiérarchie de la page d’accueil absente');
     verifier(!is_file($racine . '/vues/auth/accueil.php'), 'ancienne page d’accueil encore présente');
     verifier(str_contains($gabarit, '$pleinEcran'), 'mise en page pleine largeur absente du gabarit');
     verifier(!str_contains($gabarit, 'partiels/ecran-bienvenue.php'), 'ancien écran de bienvenue encore inclus dans le gabarit');
@@ -851,9 +852,10 @@ test('phase4_pwa_offline_et_page_bienvenue', function (Env $e) {
     verifier(!str_contains($js, 'skillswap-welcome-vu') && !str_contains($js, 'focusablesBienvenue'), 'logique de bienvenue modale encore présente dans le JavaScript');
     verifier(str_contains($js, 'serviceWorker.register'), 'enregistrement du service worker absent');
 
-    $css = (string) file_get_contents($racine . '/css/skillswap.css');
+    $css = (string) file_get_contents($racine . '/css/skillswap-v4.css');
     verifier(str_contains($css, '.accueil-bienvenue') && str_contains($css, '.accueil-suite'), 'styles de la page d’accueil absents');
     verifier(str_contains($css, '.accueil-statistiques') && str_contains($css, '.accueil-etapes'), 'styles des contenus ajoutés absents');
+    verifier(str_contains($css, '.accueil-principes') && str_contains($css, '.accueil-parcours') && str_contains($css, '.accueil-bonus'), 'styles de la nouvelle hiérarchie absents');
     verifier(!str_contains($css, '.accueil-public') && !str_contains($css, '.hero-public') && !str_contains($css, '.carte-echange') && !str_contains($css, '.etapes-accueil'), 'styles de l’ancienne page encore présents');
     verifier(!str_contains($css, 'html.premiere-visite'), 'styles de première visite encore présents');
     verifier(str_contains($css, '@keyframes apparaitre-bienvenue') && str_contains($css, 'prefers-reduced-motion'), 'animation ou mouvement réduit absent');
@@ -871,10 +873,10 @@ test('phase2_http_theme_mobile_onboarding_et_validation_inline', function (Env $
         verifier(str_contains($html, 'data-theme-toggle'), 'bouton de thème absent en public');
         verifier(str_contains($html, 'Aller au contenu principal'), 'lien d’évitement absent');
         verifier(str_contains($html, 'name="color-scheme"'), 'métadonnée color-scheme absente');
-        verifier(str_contains($html, '/css/skillswap.css') && str_contains($html, '/js/skillswap.js'), 'assets locaux absents');
+        verifier(str_contains($html, '/css/skillswap-v4.css') && str_contains($html, '/js/skillswap.js'), 'assets locaux absents');
         verifier(preg_match('/fonts\.googleapis|fonts\.gstatic|cdn\.jsdelivr|unpkg\.com/i', $html) !== 1, 'ressource distante dans le HTML');
 
-        [$code, $css] = http('GET', "$B/css/skillswap.css");
+        [$code, $css] = http('GET', "$B/css/skillswap-v4.css");
         egal(200, $code, 'CSS local');
         verifier(str_contains($css, '@media (max-width: 900px)') && str_contains($css, '.nav-mobile'), 'mise en page mobile absente');
         verifier(!str_contains($css, 'color-mix('), 'CSS incompatible avec les anciens navigateurs');
@@ -1007,10 +1009,10 @@ test('http_racine_assets_et_pages_erreur', function (Env $e) {
         [$code, $html] = http('GET', "$B/");
         egal(200, $code, 'racine');
         verifier(str_contains($html, 'SkillSwap'), 'accueil sans marque');
-        verifier(str_contains($html, 'href="/css/skillswap.css"'), 'lien CSS racine incorrect');
+        verifier(str_contains($html, 'href="/css/skillswap-v4.css"'), 'lien CSS racine incorrect');
         egal(200, http('GET', "$B/index.php")[0], 'index.php');
 
-        [$code, $css, , $entetes] = http('GET', "$B/css/skillswap.css");
+        [$code, $css, , $entetes] = http('GET', "$B/css/skillswap-v4.css");
         egal(200, $code, 'CSS');
         verifier(strlen($css) > 500, 'CSS vide');
         $type = '';
@@ -1099,7 +1101,7 @@ test('phase4_http_pwa_et_page_bienvenue', function (Env $e) {
 
         [$code, $sw] = http('GET', "$B/sw.js");
         egal(200, $code, 'service worker HTTP');
-        verifier(str_contains($sw, 'skillswap-public-v3') && str_contains($sw, 'offline.html'), 'service worker HTTP incomplet');
+        verifier(str_contains($sw, 'skillswap-public-v4') && str_contains($sw, 'offline.html'), 'service worker HTTP incomplet');
 
         [$code, $offline] = http('GET', "$B/offline.html");
         egal(200, $code, 'page hors ligne HTTP');

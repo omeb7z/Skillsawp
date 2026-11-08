@@ -6,7 +6,7 @@ $titre = (string) ($titre ?? 'Erreur');
 $message = (string) ($message ?? 'Une erreur est survenue.');
 $reference = isset($reference) && $reference !== null && $reference !== '' ? (string) $reference : null;
 $base = (string) ($base ?? '');
-$css = (string) ($css ?? ($base . '/css/skillswap.css'));
+$css = (string) ($css ?? ($base . '/css/skillswap-v4.css'));
 $accueil = (string) ($accueil ?? ($base . '/' ?: '/'));
 ?><!doctype html>
 <html lang="fr">
