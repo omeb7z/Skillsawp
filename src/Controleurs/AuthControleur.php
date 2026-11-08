@@ -9,6 +9,17 @@ final class AuthControleur extends Controleur
         if ($u) {
             rediriger($u['role'] === 'ADMIN' ? '/admin' : '/tableau-de-bord');
         }
+        $this->afficherBienvenue();
+    }
+
+    /** Page d’accueil publique consultable même lorsqu’une session est ouverte. */
+    public function bienvenue(): never
+    {
+        $this->afficherBienvenue();
+    }
+
+    private function afficherBienvenue(): never
+    {
         vue('auth/bienvenue', ['titre' => 'Bienvenue', 'pleinEcran' => true,
             'stats' => $this->svcAdmin()->tableauDeBord(),
             'vitrine' => array_slice($this->svcOffres()->rechercher(), 0, 3)]);

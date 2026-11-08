@@ -49,6 +49,7 @@ if (!headers_sent()) {
 /** Table des routes : [méthode, motif, contrôleur, action] */
 const ROUTES = [
     ['GET',  '#^/$#', AuthControleur::class, 'accueil'],
+    ['GET',  '#^/bienvenue$#', AuthControleur::class, 'bienvenue'],
     ['GET',  '#^/inscription$#', AuthControleur::class, 'inscription'],
     ['POST', '#^/inscription$#', AuthControleur::class, 'inscription'],
     ['GET',  '#^/connexion$#', AuthControleur::class, 'connexion'],

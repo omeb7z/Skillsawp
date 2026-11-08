@@ -902,6 +902,7 @@ test('phase2_http_theme_mobile_onboarding_et_validation_inline', function (Env $
         verifier(substr_count($html, 'class="nav-mobile-lien') >= 5, 'navigation mobile incomplète');
         verifier(str_contains($html, 'data-menu-ouvrir') && str_contains($html, 'aria-expanded="false"'), 'menu mobile non exposé');
         verifier(str_contains($html, 'data-theme-toggle'), 'bouton de thème absent dans l’application');
+        verifier(str_contains($html, 'href="/bienvenue"') && str_contains($html, 'Accueil du site'), 'bouton de retour à la page publique absent de l’application');
     } finally {
         arreterServeur($serveur);
     }
@@ -1071,6 +1072,10 @@ test('phase4_http_pwa_et_page_bienvenue', function (Env $e) {
         verifier(str_contains($html, 'Créer un compte') && str_contains($html, 'Se connecter'), 'actions d’authentification absentes de la page d’accueil HTTP');
         verifier(str_contains($html, 'class="bienvenue-passer" href="/connexion"'), 'le bouton Passer ne mène pas vers l’authentification');
 
+        [$code, $bienvenuePublique] = http('GET', "$B/bienvenue");
+        egal(200, $code, 'page publique /bienvenue');
+        verifier(str_contains($bienvenuePublique, 'Bienvenue sur votre') && str_contains($bienvenuePublique, 'accueil-bienvenue'), 'page publique /bienvenue incomplète');
+
         [$code] = http('GET', "$B/accueil");
         egal(404, $code, 'ancienne route /accueil encore disponible');
 
@@ -1079,6 +1084,9 @@ test('phase4_http_pwa_et_page_bienvenue', function (Env $e) {
         [$code, , $lieu] = http('GET', "$B/", [], $cookie);
         egal(302, $code, 'racine pour un étudiant connecté');
         egal('/tableau-de-bord', $lieu, 'redirection d’un étudiant connecté');
+        [$code, $bienvenueConnectee] = http('GET', "$B/bienvenue", [], $cookie);
+        egal(200, $code, 'page publique pour un étudiant connecté');
+        verifier(str_contains($bienvenueConnectee, 'Revenir à mon espace') && str_contains($bienvenueConnectee, 'accueil-bienvenue'), 'retour à l’espace absent de la page publique connectée');
         $cookieAdmin = null;
         $emailAdmin = (string) $e->db->valeur('SELECT email FROM utilisateur WHERE id = ?', [$e->admin]);
         $e->db->executer('UPDATE utilisateur SET mot_de_passe_hash = ? WHERE id = ?',

@@ -18,14 +18,20 @@ $vitrine = is_array($vitrine ?? null) ? $vitrine : [];
       <h1 id="bienvenue-titre">Bienvenue sur votre <span>SkillSwap Campus</span></h1>
       <p class="bienvenue-description" id="bienvenue-description">Donnez une heure de ce que vous savez, recevez une heure de ce que vous voulez apprendre. Ici, le temps est la seule monnaie : aucune transaction, seulement des savoirs partagés entre étudiants de l’EST Béni Mellal.</p>
       <div class="bienvenue-actions">
-        <a class="bouton bienvenue-entrer" href="<?= e(url('/inscription')) ?>">
-          Créer un compte <?= icone('fleche', 18) ?>
-        </a>
-        <a class="bouton bienvenue-connexion" href="<?= e(url('/connexion')) ?>">
-          Se connecter
-        </a>
-        <a class="bienvenue-passer" href="<?= e(url('/connexion')) ?>"
-           title="Aller à la page de connexion">Passer à la connexion</a>
+        <?php if ($utilisateur): ?>
+          <a class="bouton bienvenue-entrer" href="<?= e(url($utilisateur['role'] === 'ADMIN' ? '/admin' : '/tableau-de-bord')) ?>">
+            Revenir à mon espace <?= icone('fleche', 18) ?>
+          </a>
+        <?php else: ?>
+          <a class="bouton bienvenue-entrer" href="<?= e(url('/inscription')) ?>">
+            Créer un compte <?= icone('fleche', 18) ?>
+          </a>
+          <a class="bouton bienvenue-connexion" href="<?= e(url('/connexion')) ?>">
+            Se connecter
+          </a>
+          <a class="bienvenue-passer" href="<?= e(url('/connexion')) ?>"
+             title="Aller à la page de connexion">Passer à la connexion</a>
+        <?php endif; ?>
       </div>
       <ul class="bienvenue-preuves" aria-label="Les principes de SkillSwap Campus">
         <li><?= icone('sablier', 17) ?><span><b>1 h = 1 h.</b> Le temps donné vaut le temps reçu.</span></li>

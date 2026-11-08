@@ -3,6 +3,7 @@
 $db = App::db();
 $chemin = App::cheminDemande();
 $pleinEcran = (bool) ($pleinEcran ?? false);
+$interfacePublique = !$utilisateur || $pleinEcran;
 $solde = ['disponible' => 0, 'bloque' => 0];
 $nbNotif = 0;
 $estAdmin = false;
@@ -31,6 +32,9 @@ $estActif = static function (string $href) use ($chemin): bool {
 
 $nav = $estAdmin
     ? [
+        ['titre' => 'Découvrir', 'liens' => [
+            ['/bienvenue', 'Accueil du site', 'accueil'],
+        ]],
         ['titre' => 'Administration', 'liens' => [
             ['/admin', 'Tableau de bord', 'admin'],
             ['/admin/comptes', 'Comptes', 'comptes'],
@@ -45,6 +49,9 @@ $nav = $estAdmin
         ]],
     ]
     : [
+        ['titre' => 'Découvrir', 'liens' => [
+            ['/bienvenue', 'Accueil du site', 'accueil'],
+        ]],
         ['titre' => 'Apprendre', 'liens' => [
             ['/tableau-de-bord', 'Accueil', 'accueil'],
             ['/catalogue', 'Catalogue', 'explorer'],
@@ -132,9 +139,9 @@ $lienNav = static function (array $item) use ($estActif): string {
   </noscript>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234b3fd1'/%3E%3Cpath d='M9 6h14v2.5l-5.2 7.5 5.2 7.5V26H9v-2.5l5.2-7.5L9 8.5z' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M12 23.6h8l-4-5z' fill='%23f2b134'/%3E%3C/svg%3E">
 </head>
-<body class="<?= $utilisateur ? 'page-connectee' : 'page-publique' ?>" data-base="<?= e(url('/')) ?>">
+<body class="<?= $interfacePublique ? 'page-publique' : 'page-connectee' ?>" data-base="<?= e(url('/')) ?>">
 <a class="saut-contenu" href="#contenu">Aller au contenu principal</a>
-<?php if ($utilisateur): ?>
+<?php if (!$interfacePublique): ?>
 <div class="cadre">
   <aside class="barre" id="navigation-principale" aria-label="Navigation de l’application">
     <div class="barre-haut">
@@ -203,6 +210,9 @@ $lienNav = static function (array $item) use ($estActif): string {
             <?= (int) $solde['disponible'] ?><span> h</span>
           </a>
         <?php endif; ?>
+        <a class="bouton-icone" href="<?= e(url('/bienvenue')) ?>" aria-label="Accueil du site" title="Accueil du site">
+          <?= icone('accueil', 21) ?>
+        </a>
         <a class="bouton-icone badge-bouton" href="<?= e(url('/notifications')) ?>" aria-label="Notifications<?= $nbNotif ? ' : ' . $nbNotif . ' non lue(s)' : '' ?>">
           <?= icone('cloche', 21) ?><?php if ($nbNotif): ?><span class="pastille pastille-absolue"><?= $nbNotif ?></span><?php endif; ?>
         </a>
