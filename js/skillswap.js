@@ -397,6 +397,46 @@
     }
   });
 
+  /* ---------- Apparition douce des blocs de l'accueil public ---------- */
+  const blocsRevelables = Array.from(document.querySelectorAll(
+    ".accueil-intro, .accueil-principe, .accueil-chiffres, .accueil-etape, .accueil-bonus, .accueil-pratique-principal, .accueil-carte"
+  ));
+  if (blocsRevelables.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    try {
+      blocsRevelables.forEach(function (bloc, index) {
+        bloc.classList.add("a-reveler");
+        bloc.style.transitionDelay = Math.min(index * 35, 210) + "ms";
+      });
+      function revelerBloc(bloc) {
+        bloc.classList.add("est-revele");
+        window.setTimeout(function () {
+          bloc.classList.remove("a-reveler", "est-revele");
+          bloc.style.transitionDelay = "";
+        }, 950);
+      }
+      if ("IntersectionObserver" in window) {
+        const observateur = new IntersectionObserver(function (entrees) {
+          entrees.forEach(function (entree) {
+            if (!entree.isIntersecting) return;
+            revelerBloc(entree.target);
+            observateur.unobserve(entree.target);
+          });
+        }, { rootMargin: "0px 0px -6% 0px", threshold: .08 });
+        blocsRevelables.forEach(function (bloc) {
+          if (bloc.getBoundingClientRect().top < window.innerHeight * .96) {
+            window.requestAnimationFrame(function () { revelerBloc(bloc); });
+          } else {
+            observateur.observe(bloc);
+          }
+        });
+      } else {
+        blocsRevelables.forEach(revelerBloc);
+      }
+    } catch (e) {
+      blocsRevelables.forEach(function (bloc) { bloc.classList.add("est-revele"); });
+    }
+  }
+
   /* ---------- Installation PWA : enregistrement du service worker ---------- */
   const baseApplication = document.body.dataset.base || "/";
   if ("serviceWorker" in navigator

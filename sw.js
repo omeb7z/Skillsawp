@@ -3,13 +3,13 @@
    Les pages authentifiées et les réponses PHP ne sont jamais conservées. */
 "use strict";
 
-const VERSION_CACHE = "skillswap-public-v4";
+const VERSION_CACHE = "skillswap-public-v5";
 const BASE = new URL("./", self.location).pathname;
 const PAGE_HORS_LIGNE = BASE + "offline.html";
 const RESSOURCES_PUBLIQUES = [
   PAGE_HORS_LIGNE,
   BASE + "manifest.webmanifest",
-  BASE + "css/skillswap-v4.css",
+  BASE + "css/skillswap-v5.css",
   BASE + "js/skillswap.js",
   BASE + "icons/icon-192.png",
   BASE + "icons/icon-512.png",

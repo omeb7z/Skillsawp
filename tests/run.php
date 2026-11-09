@@ -749,7 +749,7 @@ test('fichiers_php_sans_bom_ni_balise_fermante', function (Env $e) {
 
 test('phase2_design_system_local_et_reperes_accessibles', function (Env $e) {
     $racine = dirname(__DIR__);
-    $css = (string) file_get_contents($racine . '/css/skillswap-v4.css');
+    $css = (string) file_get_contents($racine . '/css/skillswap-v5.css');
     $js = (string) file_get_contents($racine . '/js/skillswap.js');
     $gabarit = (string) file_get_contents($racine . '/vues/gabarit.php');
     $helpers = (string) file_get_contents($racine . '/src/helpers.php');
@@ -759,6 +759,8 @@ test('phase2_design_system_local_et_reperes_accessibles', function (Env $e) {
     verifier(str_contains($css, '@media (max-width: 900px)'), 'point de rupture mobile absent');
     verifier(str_contains($css, ':focus-visible'), 'indicateur de focus absent');
     verifier(str_contains($css, 'prefers-reduced-motion'), 'préférence de mouvement réduit absente');
+    verifier(str_contains($css, '--motif-zellige') && str_contains($css, '@keyframes zellige-derive'), 'motif zellige ou animation locale absente');
+    verifier(str_contains($css, '.lien-nav-apk') && str_contains($css, '.a-reveler'), 'menu APK ou apparition progressive absente');
     verifier(str_contains($css, '.saut-contenu') && str_contains($css, '.nav-mobile'), 'navigation accessible incomplète');
     verifier(str_contains($css, 'inset-inline-start: 0 !important'), 'texte hors écran susceptible de déborder');
     verifier(!str_contains($css, 'color-mix('), 'color-mix() encore utilisé');
@@ -847,12 +849,14 @@ test('phase4_pwa_offline_et_page_bienvenue', function (Env $e) {
     verifier(str_contains($gabarit, 'rel="manifest"') && str_contains($gabarit, 'apple-touch-icon'), 'liens PWA absents du gabarit');
     verifier(!str_contains($gabarit, 'skillswap-welcome-vu') && !str_contains($gabarit, 'premiere-visite'), 'logique de première visite encore présente dans le gabarit');
     verifier(str_contains($gabarit, 'data-base='), 'base PWA absente du gabarit');
+    verifier(str_contains($gabarit, '/apk/SkillSwap-Campus.apk') && str_contains($gabarit, 'download') && str_contains($gabarit, 'lien-nav-apk'), 'téléchargement APK absent du menu de l’application');
 
     $js = (string) file_get_contents($racine . '/js/skillswap.js');
     verifier(!str_contains($js, 'skillswap-welcome-vu') && !str_contains($js, 'focusablesBienvenue'), 'logique de bienvenue modale encore présente dans le JavaScript');
     verifier(str_contains($js, 'serviceWorker.register'), 'enregistrement du service worker absent');
+    verifier(str_contains($js, 'blocsRevelables') && str_contains($js, 'IntersectionObserver'), 'apparition progressive de l’accueil absente');
 
-    $css = (string) file_get_contents($racine . '/css/skillswap-v4.css');
+    $css = (string) file_get_contents($racine . '/css/skillswap-v5.css');
     verifier(str_contains($css, '.accueil-bienvenue') && str_contains($css, '.accueil-suite'), 'styles de la page d’accueil absents');
     verifier(str_contains($css, '.accueil-statistiques') && str_contains($css, '.accueil-etapes'), 'styles des contenus ajoutés absents');
     verifier(str_contains($css, '.accueil-principes') && str_contains($css, '.accueil-parcours') && str_contains($css, '.accueil-bonus'), 'styles de la nouvelle hiérarchie absents');
@@ -873,10 +877,10 @@ test('phase2_http_theme_mobile_onboarding_et_validation_inline', function (Env $
         verifier(str_contains($html, 'data-theme-toggle'), 'bouton de thème absent en public');
         verifier(str_contains($html, 'Aller au contenu principal'), 'lien d’évitement absent');
         verifier(str_contains($html, 'name="color-scheme"'), 'métadonnée color-scheme absente');
-        verifier(str_contains($html, '/css/skillswap-v4.css') && str_contains($html, '/js/skillswap.js'), 'assets locaux absents');
+        verifier(str_contains($html, '/css/skillswap-v5.css') && str_contains($html, '/js/skillswap.js'), 'assets locaux absents');
         verifier(preg_match('/fonts\.googleapis|fonts\.gstatic|cdn\.jsdelivr|unpkg\.com/i', $html) !== 1, 'ressource distante dans le HTML');
 
-        [$code, $css] = http('GET', "$B/css/skillswap-v4.css");
+        [$code, $css] = http('GET', "$B/css/skillswap-v5.css");
         egal(200, $code, 'CSS local');
         verifier(str_contains($css, '@media (max-width: 900px)') && str_contains($css, '.nav-mobile'), 'mise en page mobile absente');
         verifier(!str_contains($css, 'color-mix('), 'CSS incompatible avec les anciens navigateurs');
@@ -1010,10 +1014,10 @@ test('http_racine_assets_et_pages_erreur', function (Env $e) {
         [$code, $html] = http('GET', "$B/");
         egal(200, $code, 'racine');
         verifier(str_contains($html, 'SkillSwap'), 'accueil sans marque');
-        verifier(str_contains($html, 'href="/css/skillswap-v4.css"'), 'lien CSS racine incorrect');
+        verifier(str_contains($html, 'href="/css/skillswap-v5.css"'), 'lien CSS racine incorrect');
         egal(200, http('GET', "$B/index.php")[0], 'index.php');
 
-        [$code, $css, , $entetes] = http('GET', "$B/css/skillswap-v4.css");
+        [$code, $css, , $entetes] = http('GET', "$B/css/skillswap-v5.css");
         egal(200, $code, 'CSS');
         verifier(strlen($css) > 500, 'CSS vide');
         $type = '';
@@ -1109,7 +1113,7 @@ test('phase4_http_pwa_et_page_bienvenue', function (Env $e) {
 
         [$code, $sw] = http('GET', "$B/sw.js");
         egal(200, $code, 'service worker HTTP');
-        verifier(str_contains($sw, 'skillswap-public-v4') && str_contains($sw, 'offline.html'), 'service worker HTTP incomplet');
+        verifier(str_contains($sw, 'skillswap-public-v5') && str_contains($sw, 'offline.html'), 'service worker HTTP incomplet');
 
         [$code, $offline] = http('GET', "$B/offline.html");
         egal(200, $code, 'page hors ligne HTTP');

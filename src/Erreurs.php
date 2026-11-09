@@ -112,7 +112,7 @@ final class Erreurs
             $message = $messagePersonnalise;
         }
         $base = self::base();
-        $css = $base . '/css/skillswap-v4.css';
+        $css = $base . '/css/skillswap-v5.css';
         $accueil = $base . '/' ?: '/';
         ob_start();
         try {

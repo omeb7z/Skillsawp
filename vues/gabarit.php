@@ -34,6 +34,7 @@ $nav = $estAdmin
     ? [
         ['titre' => 'Découvrir', 'liens' => [
             ['/bienvenue', 'Accueil du site', 'accueil'],
+            ['/apk/SkillSwap-Campus.apk', 'Télécharger l’APK', 'telecharger', 0, true],
         ]],
         ['titre' => 'Administration', 'liens' => [
             ['/admin', 'Tableau de bord', 'admin'],
@@ -51,6 +52,7 @@ $nav = $estAdmin
     : [
         ['titre' => 'Découvrir', 'liens' => [
             ['/bienvenue', 'Accueil du site', 'accueil'],
+            ['/apk/SkillSwap-Campus.apk', 'Télécharger l’APK', 'telecharger', 0, true],
         ]],
         ['titre' => 'Apprendre', 'liens' => [
             ['/tableau-de-bord', 'Accueil', 'accueil'],
@@ -87,12 +89,15 @@ $navMobile = $estAdmin
 $lienNav = static function (array $item) use ($estActif): string {
     [$href, $libelle, $icone] = $item;
     $badge = (int) ($item[3] ?? 0);
+    $telecharger = (bool) ($item[4] ?? false);
     $actif = $estActif($href);
-    return '<a class="lien-nav' . ($actif ? ' actif' : '') . '" href="' . e(url($href)) . '"'
-        . ($actif ? ' aria-current="page"' : '') . '>'
+    return '<a class="lien-nav' . ($actif ? ' actif' : '') . ($telecharger ? ' lien-nav-apk' : '') . '" href="' . e(url($href)) . '"'
+        . ($actif ? ' aria-current="page"' : '')
+        . ($telecharger ? ' download title="Télécharger l’application Android (APK)"' : '') . '>'
         . '<span class="lien-nav-icone" aria-hidden="true">' . icone($icone, 19) . '</span>'
         . '<span class="lien-nav-texte">' . e($libelle) . '</span>'
         . ($badge > 0 ? '<span class="pastille" aria-label="' . $badge . ' non lue(s)">' . $badge . '</span>' : '')
+        . ($telecharger ? '<span class="lien-apk-tag" aria-hidden="true">APK</span>' : '')
         . '</a>';
 };
 ?><!doctype html>
@@ -125,7 +130,7 @@ $lienNav = static function (array $item) use ($estActif): string {
   <link rel="manifest" href="<?= e(url('/manifest.webmanifest')) ?>">
   <link rel="apple-touch-icon" href="<?= e(url('/icons/apple-touch-icon.png')) ?>">
   <link rel="icon" type="image/png" sizes="32x32" href="<?= e(url('/icons/favicon-32.png')) ?>">
-  <link rel="stylesheet" href="<?= e(url('/css/skillswap-v4.css')) ?>">
+  <link rel="stylesheet" href="<?= e(url('/css/skillswap-v5.css')) ?>">
   <noscript>
     <style>
       .theme-toggle { display: none !important; }
